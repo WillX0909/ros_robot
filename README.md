@@ -50,7 +50,14 @@ This step encompasses the bulk of the work necessary to complete this task. It i
 ### Configuration
 
 1. Wire the board
+
+   ![https://github.com/WillX0909/ros_robot/blob/master/image/pololu_chip.jpg]()
+
+   ![https://github.com/WillX0909/ros_robot/blob/master/image/wire.jpg]()
+
 2. Control through the Maestro Control Center. For the 6-channel board, each channel should be serving as a servo PWM output. 
+
+   ![https://github.com/WillX0909/ros_robot/blob/master/image/maestro.png]()
 
 ### USB Communication
 
