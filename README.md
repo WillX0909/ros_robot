@@ -19,6 +19,8 @@ robotics manipulation and further vision task with camera attached. The control 
 
 This is a demo showing how the robot arm is controlled with keyboard of a Linux laptop.
 
+The video is uploaded in YouTube with the url: https://www.youtube.com/watch?v=dZh0aEDAp8o
+
 
 
 ## High Level Description
