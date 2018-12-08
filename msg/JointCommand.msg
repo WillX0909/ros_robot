@@ -1,4 +1,3 @@
-# these are just the two angles for the pan/tilt rig:
 float32 joint1
 float32 joint2
 float32 joint3

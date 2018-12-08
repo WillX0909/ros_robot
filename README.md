@@ -1,10 +1,10 @@
 # ROS Control of a Six-Freedom Robot
 
-Author: Yuwei Xia
+**Author: *Yuwei Xia***
 
-Date: December 5th, 2018
+**Date: *December 5th, 2018***
 
-Northwestern University
+***Northwestern University***
 
 
 
@@ -16,6 +16,8 @@ robotics manipulation and further vision task with camera attached. The control 
 
 
 ## Overview
+
+This is a demo showing how the robot arm is controlled with keyboard of a Linux laptop.
 
 
 
@@ -29,7 +31,7 @@ This step simply involves connecting the Pololu #1350 chip to the six-freedom ro
 
 ### USB Communication
 
-This step includes creating a ROS control node to deal with the control message data type with 6 joints and other details and then set a keyboard control node for sending those data to the chip. The chip needs to receive the processed data through usb communication.
+This step includes creating a ROS control node to deal with the control message data type with 6 joints and other details and then set a keyboard control node for sending those data to the chip. The chip needs to receive the processed data through USB communication.
 
 ### Keyboard Control
 
@@ -63,11 +65,20 @@ MIN = 3968
 
 To use the usb channel, we first need to obtain the permission from the system
 
-```ter
+```command
 $ sudo chmod 666 /dev/ttyACM0
 ```
 
 Since there are 6 joints to be moving of the robot, I write a message type named as JointCommand.msg for transferring the control data from ROS node to chip board via terminal. This message contains 6 float32 data.
+
+```python
+float32 joint1
+float32 joint2
+float32 joint3
+float32 joint4
+float32 joint5
+float32 joint6
+```
 
 I write a JointControl class in the joint_control.py node for sending the data to the chip. The specific method is written as follow
 
@@ -105,22 +116,54 @@ $ roslaunch ros_robot keyboard_control.launch
 
 There are 6 parameters for setting the channels respectively, and 2 nodes to be started as joint_control.py and keyboard_control.py
 
+```python
+<launch>
+  <!-- ARGUMENT DEFINITIONS -->
+  <arg name="joint1" default="1" doc="Channel for the joint_1 servo" />
+  <arg name="joint2" default="2" doc="Channel for the joint_2 servo" />
+  <arg name="joint3" default="3" doc="Channel for the joint_3 servo" />
+  <arg name="joint4" default="4" doc="Channel for the joint_4 servo" />
+  <arg name="joint5" default="5" doc="Channel for the joint_5 servo" />
+  <arg name="joint6" default="6" doc="Channel for the joint_6 servo" />
+
+  <!-- start the control node: -->
+  <node pkg="ros_robot" type="joint_control.py" respawn="true" name="joint_controller"
+		output="screen" >
+	<param name="joint1_channel" value="$(arg joint1)" />
+	<param name="joint2_channel" value="$(arg joint2)" />
+  	<param name="joint3_channel" value="$(arg joint3)" />
+	<param name="joint4_channel" value="$(arg joint4)" />
+	<param name="joint5_channel" value="$(arg joint5)" />
+	<param name="joint6_channel" value="$(arg joint6)" />
+  </node>
+
+  <!-- start the keyboard polling node -->
+  <node pkg="ros_robot" type="keyboard_control.py" respawn="true" name="keyboard_control"
+	output="screen" launch-prefix="xterm -e" />
+
+</launch>
+```
+
 
 
 ## Fallbacks and Stretch-Goals
 
 ### Fallbacks
 
-The package could now be controlled through keyboard, but there is still some developments to make the stability better. 
+This package could now be controlled through keyboard, but there is still some developments to be made for better performance of the robot stability. 
 
-Meanwhile, a pre motion planned trajectory can be traced with some modifications of the code.
+Meanwhile, a pre-motion planned trajectory can be traced with some modifications of the code.
 
-### Strecth-Goals
+### Stretch-Goals
 
-There are mainly two parts for further study:
+There are mainly two fields for further study:
 
-1. To move the end-effector to desired position with auto-genetrated configuration of the robot, which requires inverse kinematics packages from ROS or the MoveIt! package.
-2. Use a camera and transfer the image data for picking up specific objects.
+1. To move the end-effector to desired position with auto-generated configuration of the robot, which requires inverse kinematics packages from ROS or the MoveIt! package.
+2. Use a camera to capture the image data and get processed with some computer vision algorithms for picking up specific objects.
 
 
+
+## References
+
+[1] Jarvis Schultz. *ME 495: Embedded Systems In Robotics*. 2018. url: http://nu-msr.github.io/embedded-course-site/
 
