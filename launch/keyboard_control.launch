@@ -1,0 +1,26 @@
+<launch>
+  <!-- ARGUMENT DEFINITIONS -->
+  <arg name="joint1" default="1" doc="Channel for the joint_1 servo" />
+  <arg name="joint2" default="2" doc="Channel for the joint_2 servo" />
+  <arg name="joint3" default="3" doc="Channel for the joint_3 servo" />
+  <arg name="joint4" default="4" doc="Channel for the joint_4 servo" />
+  <arg name="joint5" default="5" doc="Channel for the joint_5 servo" />
+  <arg name="joint6" default="6" doc="Channel for the joint_6 servo" />
+
+  
+  <!-- start the control node: -->
+  <node pkg="ros_robot" type="joint_control.py" respawn="true" name="joint_controller"
+		output="screen" >
+	<param name="joint1_channel" value="$(arg joint1)" />
+	<param name="joint2_channel" value="$(arg joint2)" />
+  	<param name="joint3_channel" value="$(arg joint3)" />
+	<param name="joint4_channel" value="$(arg joint4)" />
+	<param name="joint5_channel" value="$(arg joint5)" />
+	<param name="joint6_channel" value="$(arg joint6)" />
+  </node>
+
+  <!-- start the keyboard polling node -->
+  <node pkg="ros_robot" type="keyboard_control.py" respawn="true" name="keyboard_control"
+	output="screen" launch-prefix="xterm -e" />
+
+</launch>
